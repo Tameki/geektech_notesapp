@@ -1,7 +1,7 @@
 # GeekTech Notes App lesson
 ### Project themes: Basic architecture, [ViewPager](#header-viewpager), [Recycler](#header-recycler), [Realm](#header-realm), [SharedPreferences](#header-shared).
 
-## Tasks:
+### Tasks:
    * Создать [Fork](#header_fork) репозитория у себя на аккаунте
    * 'Intro screen' - три фрагмента(любых, которые на ваш взгляд максимально описывают плюсы и пользу приложение) во [ViewPager](#header-viewpager) с кнопками 'Next' и 'Finish'
    * Открывать 'MainActivity' на 'Finish' Intro screen
@@ -16,7 +16,7 @@
 #### <a name="header_fork">[Статья с объяснением что такое Fork на Github](http://gearmobile.github.io/git/fork-github/)</a>
 
 #### Libraries:
-    * [StepperIndicator](https://github.com/badoualy/stepper-indicator?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=3711)
+   * [StepperIndicator](https://github.com/badoualy/stepper-indicator?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=3711)
 
 #### <a name="header-viewpager"></a>ViewPager:
 
