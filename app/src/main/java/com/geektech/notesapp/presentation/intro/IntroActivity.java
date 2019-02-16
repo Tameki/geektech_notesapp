@@ -1,138 +1,166 @@
 package com.geektech.notesapp.presentation.intro;
 
-import android.support.annotation.DrawableRes;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.badoualy.stepperindicator.StepperIndicator;
 import com.geektech.notesapp.R;
+import com.geektech.notesapp.presentation.main.MainActivity;
 
-import java.util.ArrayList;
+public class IntroActivity extends AppCompatActivity
+    implements View.OnClickListener {
 
-public class IntroActivity extends AppCompatActivity {
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private IntroPagerAdapter mIntroAdapter;
     private ViewPager mViewPager;
+    private StepperIndicator mStepper;
+
+    private TextView mNextBtn;
+
+    public static void start(Activity activity) {
+        activity.startActivity(new Intent(activity, IntroActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        init();
+    }
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    //region Init
 
+    private void init() {
+        initViewPager();
+
+        mNextBtn = findViewById(R.id.intro_next_btn);
+        mNextBtn.setOnClickListener(this);
+    }
+
+    private void initViewPager() {
+        mIntroAdapter = new IntroPagerAdapter(getSupportFragmentManager());
+
+        mStepper = findViewById(R.id.intro_stepper);
         mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setAdapter(mIntroAdapter);
         mViewPager.setOffscreenPageLimit(3);
 
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() / 2);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                onPageChanged(i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
             }
         });
+
+        mStepper.setViewPager(mViewPager, mIntroAdapter.getCount());
+    }
+
+    //endregion
+
+    private void onPageChanged(int position) {
+        String btnText = "Next";
+        if (position == 2) {
+            btnText = "Finish";
+        }
+        mNextBtn.setText(btnText);
+    }
+
+    private void onNextClick() {
+        if (mViewPager.getCurrentItem() == mIntroAdapter.getCount() - 1) {
+            MainActivity.start(this);
+            finish();
+        } else {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_intro, menu);
-        return true;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.intro_next_btn:
+                onNextClick();
+                break;
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public class IntroPagerAdapter extends FragmentPagerAdapter {
+        private final int PAGES_COUNT = 3;
 
-        if (id == R.id.action_settings) {
-            return true;
+        public IntroPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        return super.onOptionsItemSelected(item);
+        //TODO: Return IntroFragment instance with target image url and title string id
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+
+            switch (position) {
+                case 0: fragment = new IntroFirstFragment();
+                    break;
+                case 1: fragment = new IntroSecondFragment();
+                    break;
+                case 2: fragment = new IntroThirdFragment();
+                    break;
+            }
+
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return PAGES_COUNT;
+        }
     }
 
-    public static class PlaceholderFragment extends Fragment {
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final String ARG_IMAGE_RES_ID = "image_res_id";
+    public static class IntroFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public IntroFragment() {
         }
 
-        public static PlaceholderFragment newInstance(
-                int sectionNumber,
-                @DrawableRes int imageResId
+        public static IntroFragment newInstance(
+                String imageUrl,
+                @StringRes int titleRes
         ) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putInt(ARG_IMAGE_RES_ID, imageResId);
-            fragment.setArguments(args);
+            IntroFragment fragment = new IntroFragment();
+
+            //TODO: Put all values into arguments
+
             return fragment;
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_intro, container, false);
-            TextView textView = rootView.findViewById(R.id.section_label);
-            textView.setText(getString(
-                            R.string.section_format,
-                            getArguments().getInt(ARG_SECTION_NUMBER))
-            );
+            View view = inflater.inflate(R.layout.fragment_intro_second, container, false);
 
-            ImageView imageView = rootView.findViewById(R.id.section_image);
-            imageView.setImageResource(getArguments().getInt(ARG_IMAGE_RES_ID));
+            initView(view);
 
-            return rootView;
-        }
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            return view;
         }
 
-        @Override
-        public Fragment getItem(int position) {
-            int index = position % 6;
-            Log.d("ololo", "Index is " + index + " , Position is " + position);
-            int imageRes;
-            if (index == 0) {
-                imageRes = R.drawable.ic_attachment;
-            } else {
-                imageRes = R.drawable.ic_circle_plus;
-            }
-            return PlaceholderFragment.newInstance(index + 1, imageRes);
-        }
-
-        @Override
-        public int getCount() {
-            return Integer.MAX_VALUE;
+        //TODO: Initialize all data from arguments
+        private void initView(View rootView) {
         }
     }
 }
