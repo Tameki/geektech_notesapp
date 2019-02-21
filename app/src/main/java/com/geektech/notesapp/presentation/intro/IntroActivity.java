@@ -2,6 +2,7 @@ package com.geektech.notesapp.presentation.intro;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
@@ -22,6 +23,9 @@ import com.geektech.notesapp.presentation.main.MainActivity;
 public class IntroActivity extends AppCompatActivity
     implements View.OnClickListener {
 
+    private static String PREF_FIRST_LAUNCH = "first_launch";
+    private SharedPreferences sharedPreferences;
+
     private IntroPagerAdapter mIntroAdapter;
     private ViewPager mViewPager;
     private StepperIndicator mStepper;
@@ -35,9 +39,19 @@ public class IntroActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
 
-        init();
+        sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+
+        if (isFirstLaunch()) {
+            setContentView(R.layout.activity_intro);
+
+            firstLaunch();
+
+            init();
+        } else {
+            MainActivity.start(this);
+            finish();
+        }
     }
 
     //region Init
@@ -73,6 +87,24 @@ public class IntroActivity extends AppCompatActivity
         });
 
         mStepper.setViewPager(mViewPager, mIntroAdapter.getCount());
+    }
+
+    //endregion
+
+    //region Shared Preferences
+
+    private boolean isFirstLaunch() {
+        if (sharedPreferences.contains(PREF_FIRST_LAUNCH)) {
+            return sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, true);
+        } else {
+            return true;
+        }
+    }
+
+    private void firstLaunch() {
+        sharedPreferences.edit()
+                .putBoolean(PREF_FIRST_LAUNCH, false)
+                .apply();
     }
 
     //endregion
