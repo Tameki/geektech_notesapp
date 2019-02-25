@@ -2,7 +2,6 @@ package com.geektech.notesapp.presentation.intro;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.badoualy.stepperindicator.StepperIndicator;
+import com.geektech.notesapp.App;
 import com.geektech.notesapp.R;
 import com.geektech.notesapp.presentation.main.MainActivity;
 
@@ -24,7 +24,6 @@ public class IntroActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     private static String PREF_FIRST_LAUNCH = "first_launch";
-    private SharedPreferences sharedPreferences;
 
     private IntroPagerAdapter mIntroAdapter;
     private ViewPager mViewPager;
@@ -39,8 +38,6 @@ public class IntroActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
 
         if (isFirstLaunch()) {
             setContentView(R.layout.activity_intro);
@@ -94,17 +91,11 @@ public class IntroActivity extends AppCompatActivity
     //region Shared Preferences
 
     private boolean isFirstLaunch() {
-        if (sharedPreferences.contains(PREF_FIRST_LAUNCH)) {
-            return sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, true);
-        } else {
-            return true;
-        }
+        return App.sharedStorage.get(PREF_FIRST_LAUNCH, true);
     }
 
     private void firstLaunch() {
-        sharedPreferences.edit()
-                .putBoolean(PREF_FIRST_LAUNCH, false)
-                .apply();
+        App.sharedStorage.set(PREF_FIRST_LAUNCH, false);
     }
 
     //endregion
