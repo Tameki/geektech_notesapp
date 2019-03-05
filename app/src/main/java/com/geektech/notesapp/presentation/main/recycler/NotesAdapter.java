@@ -18,7 +18,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private ArrayList<NoteEntity> mNotes;
     private NoteItemViewHolder.NoteClickListener mListener;
 
-    public NotesAdapter(ArrayList<NoteEntity> notes, NoteItemViewHolder.NoteClickListener listener) {
+    public NotesAdapter(
+            ArrayList<NoteEntity> notes,
+            NoteItemViewHolder.NoteClickListener listener) {
         this.mNotes = notes;
         this.mListener = listener;
     }
@@ -43,16 +45,16 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return mNotes.size();
     }
 
-    void setNotes(Collection<NoteEntity> notes) {
+    public void setNotes(Collection<NoteEntity> notes) {
         mNotes.clear();
         mNotes.addAll(notes);
         notifyDataSetChanged();
     }
 
     @Nullable
-    NoteEntity getNote(int id) {
-        if (mNotes.size() > id && id >= 0) {
-            return mNotes.get(id);
+    public NoteEntity getNote(int position) {
+        if (mNotes.size() > position && position >= 0) {
+            return mNotes.get(position);
         } else {
             return null;
         }
