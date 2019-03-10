@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.geektech.notesapp.R;
 import com.geektech.notesapp.model.NoteEntity;
+import com.geektech.util.DateUtil;
 
 public class NoteItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,7 +35,7 @@ public class NoteItemViewHolder extends RecyclerView.ViewHolder {
     void onBind(NoteEntity noteEntity) {
         mTitle.setText(noteEntity.getTitle());
         mDescription.setText(noteEntity.getDescription());
-        mCreatedAt.setText(noteEntity.getCreatedAt().toString()); //TODO: Format date
+        mCreatedAt.setText(DateUtil.formatDefaultDate(noteEntity.getCreatedAt()));
     }
 
     public interface NoteClickListener {

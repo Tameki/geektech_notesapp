@@ -2,20 +2,19 @@ package com.geektech.notesapp.data.notes.local;
 
 import android.util.Log;
 
-import com.geektech.notesapp.data.notes.NotesStorage;
+import com.geektech.notesapp.data.notes.INotesStorage;
 import com.geektech.notesapp.data.notes.local.model.NoteMapper;
 import com.geektech.notesapp.data.notes.local.model.RNote;
 import com.geektech.notesapp.model.NoteEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class NotesLocalStorage implements NotesStorage {
+public class NotesRealmStorage implements INotesStorage {
 
     //region Private
 

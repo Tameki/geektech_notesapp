@@ -52,4 +52,42 @@
         android:textStyle="italic"
         android:text="12 mar 2019"/>
     
+    <TextView
+        android:id="@+id/note_info_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        app:layout_constraintTop_toBottomOf="@+id/note_info_created_at"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/note_info_delete"
+        android:layout_marginTop="32dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="?selectableItemBackground"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/note_info_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintTop_toBottomOf="@+id/note_info_created_at"
+        app:layout_constraintLeft_toRightOf="@+id/note_info_edit"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="?selectableItemBackground"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"/>
+    
 </android.support.constraint.ConstraintLayout>
